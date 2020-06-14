@@ -10,15 +10,19 @@ export default {
       try {
         state.loading = true;
         const response = await fetch(
-          'https://launchlibrary.net/1.3/launch/next/9',
+          'https://launchlibrary.net/1.3/launch/next/9'
         );
         const launches = await response.json();
-        state.launches = launches;
+        state.launches = launches.launches;
       } catch (error) {
         state.error = error.message;
       } finally {
         state.loading = false;
       }
     },
+  },
+  getters: {
+    getById: state => id =>
+      state.launches.find(launch => launch.id === Number(id)),
   },
 };
