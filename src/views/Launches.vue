@@ -4,7 +4,8 @@
   </main>
 </template>
 <script>
-import { useState } from '@u3u/vue-hooks';
+import { useState, useActions } from '@u3u/vue-hooks';
+import { onMounted } from '@vue/composition-api';
 import Launch from '../components/Launch.vue';
 
 export default {
@@ -13,11 +14,16 @@ export default {
     Launch,
   },
   setup() {
+    const { getLaunches } = useActions('launches', ['getLaunches']);
     const { launches, loading, error } = useState('launches', [
       'launches',
       'loading',
       'error',
     ]);
+
+    onMounted(() => {
+      getLaunches();
+    });
 
     return {
       launches,

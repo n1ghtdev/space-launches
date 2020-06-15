@@ -5,8 +5,8 @@
   <div class="wrapper" v-else>Not Found</div>
 </template>
 <script>
-import { useRouter, useStore, useActions, useGetters } from '@u3u/vue-hooks';
-import { computed, ref } from '@vue/composition-api';
+import { useRouter, useActions, useGetters } from '@u3u/vue-hooks';
+import { computed } from '@vue/composition-api';
 import SingleLaunch from '../components/SingleLaunch.vue';
 
 export default {
@@ -16,9 +16,16 @@ export default {
   setup() {
     const { route } = useRouter();
     const launchId = route.value.params.id;
+    const { getLaunchById } = useActions('launches', ['getLaunchById']);
     const { getById } = useGetters('launches', ['getById']);
+    const launch = computed(() => getById.value(launchId));
+
+    if (!launch.value) {
+      getLaunchById(launchId);
+    }
+
     return {
-      launch: computed(() => getById.value(launchId)),
+      launch,
     };
   },
 };

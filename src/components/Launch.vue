@@ -1,11 +1,13 @@
 <template>
   <article class="launch">
     <header class="header">
-      <h2 class="title">{{ launch.name }}</h2>
+      <router-link :to="`/launch/${launch.id}`">
+        <h2 class="title">{{ launch.name }}</h2>
+      </router-link>
       <span class="date">{{ launch.windowstart.split(',').shift() }}</span>
     </header>
     <div class="poster">
-      <img :src="launch.rocket.imageURL.replace('1920', '720')" alt="" />
+      <img :src="launch.rocket.imageURL.replace('1920', '720')" alt />
     </div>
   </article>
 </template>
