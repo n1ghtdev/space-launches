@@ -1,8 +1,8 @@
 <template>
   <div class="countdown">
-    <div v-for="item in items" :key="item">
-      <div class>{{ countdownDate[item] }}</div>
-      <div class>{{ item }}</div>
+    <div class="item" v-for="item in items" :key="item">
+      <div class="item-value">{{ countdownDate[item] }}</div>
+      <div class="item-label">{{ item }}</div>
     </div>
   </div>
 </template>
@@ -28,4 +28,23 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.countdown {
+  display: flex;
+}
+.item {
+  text-align: center;
+  margin-right: 20px;
+  &:last-child {
+    margin-right: 0;
+  }
+}
+.item-value {
+  font-size: 32px;
+  font-weight: bold;
+}
+.item-label {
+  font-size: 12px;
+  text-transform: uppercase;
+}
+</style>

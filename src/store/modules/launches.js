@@ -1,23 +1,36 @@
 export default {
   namespaced: true,
   state: {
-    launches: [],
+    launches: {},
+    byId: [],
+  },
+  getters: {
+    getAll: state => state.byId.map(id => state.launches[id]),
+    getById: state => id => state.launches[id],
   },
   mutations: {
     setLaunches(state, launches) {
-      state.launches = [...state.launches, ...launches];
+      for (const launch of launches) {
+        state.launches[launch.id] = launch;
+        if (state.byId.indexOf(launch.id) === -1) {
+          state.byId.push(launch.id);
+        }
+      }
     },
     setLaunch(state, launch) {
-      state.launches.push(launch);
+      state.launches[launch.id] = launch;
+      state.byId.push(launch.id);
     },
   },
   actions: {
     async getLaunchById(store, id) {
-      const response = await fetch(
-        `https://launchlibrary.net/1.3/launch/${id}`
-      );
-      const json = await response.json();
-      store.commit('setLaunches', json.launches);
+      if (!store.state.launches[id]) {
+        const response = await fetch(
+          `https://launchlibrary.net/1.3/launch/${id}`
+        );
+        const json = await response.json();
+        store.commit('setLaunch', json.launches.shift());
+      }
     },
     async getLaunches(store) {
       const response = await fetch(
@@ -26,9 +39,5 @@ export default {
       const json = await response.json();
       store.commit('setLaunches', json.launches);
     },
-  },
-  getters: {
-    getById: state => id =>
-      state.launches.find(launch => launch.id === Number(id)),
   },
 };

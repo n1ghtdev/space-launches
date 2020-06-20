@@ -1,11 +1,12 @@
 <template>
-  <main class="launches">
+  <main class="launches" v-if="launches.length > 0">
     <Launch v-for="launch in launches" :key="launch.id" :launch="launch" />
   </main>
+  <main class="launches" v-else></main>
 </template>
 <script>
-import { useState, useActions } from '@u3u/vue-hooks';
-import { onMounted } from '@vue/composition-api';
+import { useActions, useGetters } from '@u3u/vue-hooks';
+import { onMounted, computed } from '@vue/composition-api';
 import Launch from '../components/Launch.vue';
 
 export default {
@@ -14,21 +15,15 @@ export default {
     Launch,
   },
   setup() {
+    const { getAll } = useGetters('launches', ['getAll']);
     const { getLaunches } = useActions('launches', ['getLaunches']);
-    const { launches, loading, error } = useState('launches', [
-      'launches',
-      'loading',
-      'error',
-    ]);
 
     onMounted(() => {
       getLaunches();
     });
 
     return {
-      launches,
-      loading,
-      error,
+      launches: computed(() => getAll.value),
     };
   },
 };

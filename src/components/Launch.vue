@@ -7,7 +7,7 @@
       <span class="date">{{ launch.windowstart.split(',').shift() }}</span>
     </header>
     <div class="poster">
-      <img :src="launch.rocket.imageURL.replace('1920', '720')" alt />
+      <img :src="launch.rocket.imageURL.replace('1920', '720')" :alt="launch.rocket.name" />
     </div>
   </article>
 </template>
@@ -23,7 +23,9 @@ export default {
 .launch {
   flex-basis: 100%;
   padding: 10px 5px;
-
+  @media (min-width: 768px) {
+    flex-basis: 50%;
+  }
   @media (min-width: 1280px) {
     flex-basis: 33.33%;
   }
