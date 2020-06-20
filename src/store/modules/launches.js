@@ -18,7 +18,7 @@ export default {
       }
     },
     setLaunch(state, launch) {
-      state.launches[launch.id] = launch;
+      state.launches = { ...state.launches, [launch.id]: launch };
       state.byId.push(launch.id);
     },
   },
