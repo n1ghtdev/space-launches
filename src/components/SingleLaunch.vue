@@ -1,34 +1,25 @@
 <template>
   <div class="wrapper">
-    <header class="header">
-      <div class="date">{{ launch.windowstart }}</div>
-      <Countdown :date="launch.windowstart" />
-    </header>
-    <div class="row">
-      <div class="poster">
-        <img
-          :src="launch.rocket.imageURL.replace('1920', '720')"
-          :alt="launch.rocket.name"
-        />
-      </div>
+    <div class="launch-info">
       <article class="content">
         <h1 class="title">{{ launch.name }}</h1>
         <ul class="pads">
-          <li v-for="pad in launch.location.pads" class="pad" :key="pad.id">
-            {{ pad.name }}
-          </li>
+          <li v-for="pad in launch.location.pads" class="pad" :key="pad.id">{{ pad.name }}</li>
         </ul>
         <ul class="missions">
-          <li
-            class="mission"
-            v-for="mission in launch.missions"
-            :key="mission.id"
-          >
+          <li class="mission" v-for="mission in launch.missions" :key="mission.id">
             <h2 class="mission__title">mission: {{ mission.name }}</h2>
             <p class="mission__description">{{ mission.description }}</p>
           </li>
         </ul>
       </article>
+      <div class="date-box">
+        <div class="date-start">{{ launch.windowstart }}</div>
+        <Countdown :date="launch.windowstart" />
+      </div>
+    </div>
+    <div class="poster">
+      <img :src="launch.rocket.imageURL.replace('1920', '720')" :alt="launch.rocket.name" />
     </div>
   </div>
 </template>
@@ -53,36 +44,40 @@ export default {
   margin: 0 auto;
   padding: 0 15px;
 }
-.row {
+.launch-info {
   display: flex;
   flex-wrap: wrap;
-  @media (min-width: 899px) {
+
+  @media (min-width: 768px) {
     flex-wrap: nowrap;
+    align-items: center;
   }
 }
-.header {
+.date-box {
   padding: 20px;
   display: flex;
   margin-bottom: 20px;
   flex-flow: column nowrap;
   align-items: center;
 }
-.date {
+.date-start {
   margin-bottom: 20px;
 }
 .poster {
-  flex: 1 0 50%;
+  margin-bottom: 40px;
   img {
+    display: block;
     max-width: 100%;
     width: auto;
     height: 100%;
     border-radius: 5px;
+    margin: 0 auto;
   }
 }
 .content {
+  flex: 1;
   @media (min-width: 699px) {
-    margin-left: 25px;
-    padding: 15px 30px;
+    margin: 40px 0;
   }
 }
 .title {
@@ -106,6 +101,7 @@ export default {
   margin-bottom: 10px;
 }
 .mission__description {
-  line-height: 1.35;
+  line-height: 1.5;
+  max-width: 500px;
 }
 </style>

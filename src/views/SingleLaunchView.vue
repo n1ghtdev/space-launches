@@ -35,6 +35,9 @@ export default {
     }
 
     onMounted(() => {
+      window.scrollTo({
+        top: 0,
+      });
       if (!launch.value) {
         getLaunch();
       }
