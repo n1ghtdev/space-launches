@@ -1,3 +1,5 @@
+import { fetchLaunches, fetchLaunchById } from '../../api';
+
 export default {
   namespaced: true,
   state: {
@@ -23,21 +25,16 @@ export default {
     },
   },
   actions: {
+    // eslint-disable-next-line consistent-return
     async getLaunchById(store, id) {
-      if (!store.state.launches[id]) {
-        const response = await fetch(
-          `https://launchlibrary.net/1.3/launch/${id}`
-        );
-        const json = await response.json();
-        store.commit('setLaunch', json.launches.shift());
-      }
+      const data = await fetchLaunchById(id);
+      store.commit('setLaunch', data.launches.shift());
+      return data;
     },
     async getLaunches(store) {
-      const response = await fetch(
-        'https://launchlibrary.net/1.3/launch/next/9'
-      );
-      const json = await response.json();
-      store.commit('setLaunches', json.launches);
+      const data = await fetchLaunches();
+      store.commit('setLaunches', data.launches);
+      return data;
     },
   },
 };
