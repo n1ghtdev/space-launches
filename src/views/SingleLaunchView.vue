@@ -1,18 +1,12 @@
 <template>
-  <div class="wrapper" v-if="launch">
+  <div class="wrapper" v-if="loading">Loading...</div>
+  <div class="wrapper" v-else-if="launch">
     <SingleLaunch :launch="launch" />
-  </div>
-  <div class="wrapper" v-else-if="loading">Loading...</div>
-  <div class="wrapper" v-else>
-    Something went wrong
-    <router-link to="/" v-slot="{href, navigate}">
-      <a :href="href" @click="navigate">go back</a>
-    </router-link>
   </div>
 </template>
 <script>
 import { useRouter, useActions, useGetters } from '@u3u/vue-hooks';
-import { onMounted, watch, computed, reactive } from '@vue/composition-api';
+import { onMounted, watch, computed, ref } from '@vue/composition-api';
 import SingleLaunch from '../components/SingleLaunch.vue';
 
 export default {
@@ -25,16 +19,18 @@ export default {
     const { getLaunchById } = useActions('launches', ['getLaunchById']);
     const { getById } = useGetters('launches', ['getById']);
     const launch = computed(() => getById.value(launchId));
-    const state = reactive({ loading: false, error: false });
+
+    const loading = ref(false);
+    const error = ref(false);
 
     async function getLaunch() {
-      state.loading = true;
+      loading.value = true;
       try {
         await getLaunchById(launchId);
-      } catch (error) {
-        state.error = error.message;
+      } catch (err) {
+        error.value = err.message;
       } finally {
-        state.loading = false;
+        loading.value = false;
       }
     }
 
@@ -45,7 +41,7 @@ export default {
     });
 
     watch(
-      () => state.error,
+      () => error.value,
       (curr, prev) => {
         if (curr !== prev && curr) {
           window.location.href = '/';
@@ -55,7 +51,7 @@ export default {
 
     return {
       launch,
-      ...state,
+      loading,
     };
   },
 };
