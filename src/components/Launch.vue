@@ -1,13 +1,15 @@
 <template>
   <article class="launch">
     <header class="header">
-      <router-link :to="`/launch/${launch.id}`">
-        <h2 class="title">{{ launch.name }}</h2>
-      </router-link>
+      <h2 class="title">
+        <router-link :to="`/launch/${launch.id}`">{{ launch.name }}</router-link>
+      </h2>
       <span class="date">{{ launch.windowstart.split(',').shift() }}</span>
     </header>
     <div class="poster">
-      <img :src="launch.rocket.imageURL.replace('1920', '720')" :alt="launch.rocket.name" />
+      <router-link :to="`/launch/${launch.id}`">
+        <img :src="launch.rocket.imageURL.replace('1920', '720')" :alt="launch.rocket.name" />
+      </router-link>
     </div>
   </article>
 </template>
@@ -42,6 +44,14 @@ export default {
 }
 .title {
   font-size: 16px;
+
+  a {
+    color: #fff;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 .date {
   font-size: 14px;

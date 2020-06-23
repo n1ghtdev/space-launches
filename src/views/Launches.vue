@@ -1,10 +1,12 @@
 <template>
-  <main class="launches" v-if="launches.length > 0">
+  <main class="launches" v-if="launches.length > 1">
     <Launch v-for="launch in launches" :key="launch.id" :launch="launch" />
   </main>
   <main class="launches" v-else></main>
 </template>
 <script>
+// TODO:
+// add loading handlers
 import { useActions, useGetters } from '@u3u/vue-hooks';
 import { onMounted, computed } from '@vue/composition-api';
 import Launch from '../components/Launch.vue';
