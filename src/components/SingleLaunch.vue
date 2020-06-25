@@ -1,14 +1,18 @@
 <template>
   <div class="wrapper">
     <header class="header">
-      <div class="container">
-        <router-link class="header-link" to="/" exact>
+      <router-link class="header-link" to="/" exact>
+        <div class="container">
           <span class="arrow"></span>go back
-        </router-link>
-      </div>
+        </div>
+      </router-link>
     </header>
     <div class="launch container">
       <div class="launch-info">
+        <div class="date-box">
+          <div class="date-start">{{ new Date(launch.windowstart).toLocaleString() }}</div>
+          <Countdown :date="launch.windowstart" />
+        </div>
         <article class="content">
           <h1 class="title">{{ launch.name }}</h1>
           <ul class="pads">
@@ -21,10 +25,6 @@
             </li>
           </ul>
         </article>
-        <div class="date-box">
-          <div class="date-start">{{ new Date(launch.windowstart).toLocaleString() }}</div>
-          <Countdown :date="launch.windowstart" />
-        </div>
       </div>
       <div class="poster">
         <img :src="launch.rocket.imageURL.replace('1920', '720')" :alt="launch.rocket.name" />
@@ -65,6 +65,14 @@ export default {
   font-size: 14px;
   font-weight: bold;
   padding: 15px 0;
+
+  &:hover {
+    background: #fff;
+    color: #000;
+    .arrow:after {
+      background: #000;
+    }
+  }
 }
 .arrow {
   position: relative;
@@ -99,6 +107,7 @@ export default {
 .launch-info {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 
   @media (min-width: 768px) {
     flex-wrap: nowrap;
@@ -132,7 +141,6 @@ export default {
   }
 }
 .content {
-  flex: 1;
   margin: 20px 0;
 
   @media (min-width: 699px) {
@@ -160,7 +168,7 @@ export default {
   margin-bottom: 10px;
 }
 .mission__description {
-  line-height: 1.5;
-  max-width: 500px;
+  line-height: 1.7;
+  max-width: 700px;
 }
 </style>

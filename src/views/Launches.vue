@@ -1,14 +1,12 @@
 <template>
-  <main class="launches" v-if="launches.length > 1">
+  <main class="launches" v-if="loading"></main>
+  <main class="launches" v-else-if="!loading && !error">
     <Launch v-for="launch in launches" :key="launch.id" :launch="launch" />
   </main>
-  <main class="launches" v-else></main>
 </template>
 <script>
-// TODO:
-// add loading handlers
 import { useActions, useGetters } from '@u3u/vue-hooks';
-import { onMounted, computed } from '@vue/composition-api';
+import { onMounted, computed, ref } from '@vue/composition-api';
 import Launch from '../components/Launch.vue';
 
 export default {
@@ -20,12 +18,28 @@ export default {
     const { getAll } = useGetters('launches', ['getAll']);
     const { getLaunches } = useActions('launches', ['getLaunches']);
 
+    const loading = ref(false);
+    const error = ref(false);
+
+    async function loadLaunches() {
+      loading.value = true;
+      try {
+        await getLaunches();
+      } catch (err) {
+        error.value = err.message;
+      } finally {
+        loading.value = false;
+      }
+    }
+
     onMounted(() => {
-      getLaunches();
+      loadLaunches();
     });
 
     return {
       launches: computed(() => getAll.value),
+      loading,
+      error,
     };
   },
 };

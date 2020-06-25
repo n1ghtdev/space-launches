@@ -23,7 +23,7 @@ export default {
     const loading = ref(false);
     const error = ref(false);
 
-    async function getLaunch() {
+    async function loadLaunch() {
       loading.value = true;
       try {
         await getLaunchById(launchId);
@@ -39,7 +39,7 @@ export default {
         top: 0,
       });
       if (!launch.value) {
-        getLaunch();
+        loadLaunch();
       }
     });
 
