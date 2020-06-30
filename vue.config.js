@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/space-launches/',
   lintOnSave: false,
   css: {
     loaderOptions: {
